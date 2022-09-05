@@ -7,17 +7,19 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "./Counters.sol";
 
-contract Item721 is
+contract SBCNFT is
     Context,
     ERC721Enumerable,
     ERC721Burnable,
     ERC721Pausable,
-    AccessControlEnumerable
+    AccessControlEnumerable,
+    Ownable
 {
     using Strings for uint256;
-    using MSNFTCounters for MSNFTCounters.Counter;
+    using Counters for Counters.Counter;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -29,7 +31,7 @@ contract Item721 is
     modifier onlyMinter() {
         require(
             hasRole(MINTER_ROLE, _msgSender()),
-            "Item721: must have minter role to mint"
+            "SBCNFT: must have minter role to mint"
         );
         _;
     }
@@ -37,7 +39,7 @@ contract Item721 is
     modifier onlyPauser() {
         require(
             hasRole(PAUSER_ROLE, _msgSender()),
-            "Item721: must have pauser role to do pause/unpause"
+            "SBCNFT: must have pauser role to do pause/unpause"
         );
         _;
     }
@@ -46,7 +48,7 @@ contract Item721 is
         string memory _name,
         string memory _symbol,
         string memory _baseTokenURI
-    ) ERC721(_name, _symbol) {
+    ) ERC721(_name, _symbol) Ownable() {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setupRole(MINTER_ROLE, _msgSender());
         _setupRole(PAUSER_ROLE, _msgSender());
@@ -58,7 +60,7 @@ contract Item721 is
         public
         view
         virtual
-        override(AccessControlEnumerable, ERC721, ERC721Enumerable, IItem721)
+        override(AccessControlEnumerable, ERC721, ERC721Enumerable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
@@ -67,10 +69,10 @@ contract Item721 is
     function tokenURI(uint256 tokenId)
         public
         view
-        override(ERC721, IItem721)
+        override(ERC721)
         returns (string memory)
     {
-        require(_exists(tokenId), "Item721: URI query for nonexistent token");
+        require(_exists(tokenId), "SBCNFT: URI query for nonexistent token");
 
         return
             bytes(baseTokenURI).length > 0
@@ -90,7 +92,7 @@ contract Item721 is
         returns (uint256[] memory)
     {
         uint256 balance = balanceOf(owner);
-        require(balance != 0, "Item721: Owner has no token");
+        require(balance != 0, "SBCNFT: Owner has no token");
         uint256[] memory res = new uint256[](balance);
 
         for (uint256 i = 0; i < balance; i++) {
@@ -111,7 +113,7 @@ contract Item721 is
     function setBaseTokenURI(string memory _baseTokenURI) public {
         require(
             hasRole(DEFAULT_ADMIN_ROLE, _msgSender()),
-            "Item721: Only DEFAULT_ADMIN_ROLE can modify baseTokenURI"
+            "SBCNFT: Only DEFAULT_ADMIN_ROLE can modify baseTokenURI"
         );
         baseTokenURI = _baseTokenURI;
     }
