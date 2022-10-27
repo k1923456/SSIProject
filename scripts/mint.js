@@ -29,7 +29,7 @@ async function main() {
       console.log(
         `${addressNameList[i][1]} 地址錯誤！: ${addressNameList[i][2]}`
       );
-      break;
+      return;
     }
   }
 
