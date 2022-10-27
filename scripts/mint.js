@@ -37,7 +37,7 @@ async function main() {
   let totalSupply = 0;
   for (let i = 1; i < addressNameList.length; i++) {
     mintTo = addressNameList[i][2].trim(" ");
-    const tx = await sbcNFT.mint(env.mintTo);
+    const tx = await sbcNFT.mint(mintTo);
     await tx.wait(env.waitBlock);
     totalSupply = await sbcNFT.totalSupply();
     console.log(
