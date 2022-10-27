@@ -19,5 +19,7 @@
     "solidity-coverage": "^0.7.21",
     "typechain": "^8.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "node-xlsx": "^0.21.0"
+  }
 }
