@@ -33,18 +33,23 @@ async function main() {
     }
   }
 
-  // Mint
-  let totalSupply = 0;
+  // Transfer
+  let startTokenId = 78;
+  const accounts = await hre.ethers.getSigners();
   for (let i = 1; i < addressNameList.length; i++) {
     if (addressNameList[i].length === 0) {
       continue;
     }
+    const tokenId = startTokenId + i;
     mintTo = addressNameList[i][2].trim(" ");
-    const tx = await sbcNFT.mint(mintTo);
+    const tx = await sbcNFT["safeTransferFrom(address,address,uint256)"](
+      accounts[0].address,
+      mintTo,
+      tokenId
+    );
     await tx.wait(1);
-    totalSupply = await sbcNFT.totalSupply();
     console.log(
-      `Mint token ID: ${totalSupply} token to ${mintTo}, Name: ${addressNameList[i][1]}`
+      `Mint token ID: ${tokenId} token transfer to ${mintTo}, Name: ${addressNameList[i][1]}`
     );
   }
 }
