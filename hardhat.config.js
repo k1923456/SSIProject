@@ -75,7 +75,7 @@ module.exports = {
       url: `http://127.0.0.1:8545`,
     },
     polygon: {
-      url: `https://polygon-rpc.com`,
+      url: `https://newest-silent-pond.matic.discover.quiknode.pro/9e3f34749691b7ecd24aad9ead57ce1eb1b12280/`,
       accounts: [`0x${process.env.PRIVATE_KEY}`],
     },
     mumbai: {
