@@ -4,7 +4,7 @@ const config = require("./config/config.default");
 const path = require("path");
 const xlsx = require("node-xlsx");
 
-const newFileName = "1229";
+const newFileName = "20230601";
 
 async function main() {
   await config.ConfigDefault();
